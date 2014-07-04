@@ -1,0 +1,69 @@
+<div class="fill_line fill_line_with_top_margin"></div>
+
+<div id="what_is_speck_overlay_container" class="overlay_container">
+  <div id="what_is_speck_image_overlay">Speck is an air quality monitor that detects fine particulate matter in your indoor environment and informs you about trends and changes in particle concentration.</div>
+  <img src="assets/whatisspeck_main.png" height="518" width="1130" alt="whatisspeck_main">
+</div>
+
+<div class="fill_line"></div>
+
+<table id="main_points2" class="center">
+  <tr>
+    <td>
+      <div id="color_coding_container">
+        <img src="assets/color_coding.png" width="322" alt="color_coding" class="color_coding">
+        <img src="assets/color_coding.png" width="589" alt="color_coding_big" class="color_coding_big">
+      </div>
+    </td>
+    <td>
+      <img src="assets/home_screen.png" height="262" width="322" alt="home_screen" style="margin-top: 14px">
+    </td>
+    <td class="last_col">
+      <img src="assets/historical_trends.png" height="262" width="322" alt="historical_trends" style="margin-top: 14px">
+    </td>
+  </tr>
+  <tr>
+    <td class="align_top">
+      <h4 class="bold">Color Coding</h4>
+      <p>
+        Color coding for Speck readings are based on the <a href="http://airnow.gov/index.cfm?action=aqibasics.aqi" target="_blank" class="link_underline">U.S. Air Quality Index</a> (AQI). The Environmental
+        Protection Agency sets AQI standards to indicate air quality levels that are acceptable or harmful
+        for human health. Refer to the chart below to see how Speck readings compare with AQI ratings.
+      </p>
+    </td>
+    <td class="align_top">
+      <h4 class="bold">Home Screen</h4>
+      <p>
+        The home screen displays current fine particle concentration levels in micrograms per cubic meter (&mu;g/m<sup>3</sup>).
+        An arrow indicator shows where the current reading falls on the air quality color scale. If the Speck
+        detects readings consistently above 55 for 15 consecutive minutes (or more) over the past 12 hours, it
+        will display an exclamation point alert.
+      </p>
+    </td>
+    <td class="align_top last_col">
+      <h4>Historical Trends</h4>
+      <p>
+        Tapping the graph or exclamation point icon at the top right of the screen provides historical Speck data. The first tap
+        displays a 12-hour view and the second tap shows data from the past hour. Note that although the threshold ratings are
+        12.0, 35.4, 55.4, 150.4, 250.4 and 500.0, the Speck only displays whole numbers as shown above.
+      </p>
+    </td>
+  </tr>
+</table>
+
+<table class="center" style="margin-bottom: 40px; margin-top: 70px;">
+  <tr>
+    <td>
+      <div class="align_left">
+        <img src="assets/whatisspeck_specifciations.png" width="540" alt="whatisspeck_specifciations">
+      </div>
+    </td>
+    <td class="align_top">
+      <div style="margin-left: 42px">
+        <div style="color: #7ea5ba; font-weight: bold; padding-bottom: 8px;" class="align_left">Setting up your Speck</div>
+        <img style="margin-bottom: 10px" src="assets/whatisspeck_setup.png" height="250" width="540" alt="whatisspeck_setup">
+        <div class="align_left link_underline"><%= link_to("Download the Speck Setup Guide", {:action=>'download', :path => "/downloads/docs/SpeckSetUpGuide.pdf", :format => :pdf}, :target => '_blank', :class => "link_underline") %></div>
+      </div>
+    </td>
+  </tr>
+</table>

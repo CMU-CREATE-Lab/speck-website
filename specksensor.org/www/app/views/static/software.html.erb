@@ -1,0 +1,41 @@
+<h1 id="page_heading">Software</h1>
+
+<table style="margin-left: -5px;">
+   <tr class="align_top">
+      <td class="align_left">
+         <div class="bold">Speck Gateway</div>
+         <div class="speck_version">version 2.1.0</div>
+         <div>
+            <p>
+               The Speck Gateway is a free,
+               <a href="https://github.com/CMU-CREATE-Lab/speck-gateway" target="github" class="link_underline">open-source</a> application
+               which<br>downloads data samples collected by the Speck to your computer.
+            </p>
+            <p>
+               You must have
+               <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" class="link_underline">Java SE 6</a>
+               or newer installed in order to run the software.<br>
+            </p>
+         </div>
+         <p></p>
+         <div>
+            If you need help, please see the <%= link_to("help documentation", {:action => 'download', :path => "/downloads/docs/speck_gateway.pdf", :format => :pdf}, :target => "_blank", :class => "link_underline") %>.
+         </div>
+         <p></p>
+         <table>
+            <tr class="align_top">
+               <td class="align_left">
+                  <div class="download_link"><%= button_to("Download for Mac OS", {:action => 'download', :path => "/downloads/software/mac/SpeckGateway.dmg", :format => :dmg}) %></div>
+                  <div class="download_link"><%= button_to("Download for Windows", {:action => 'download', :path => "/downloads/software/windows/SpeckGateway.zip", :format => :zip}) %></div>
+                  <div class="download_link"><%= button_to("Download for Linux", {:action => 'download', :path => "/downloads/software/speck-gateway.zip", :format => :zip}) %></div>
+               </td>
+            </tr>
+         </table>
+         <p></p>
+         <div>
+            If your operating system is not one of the above, or if you have custom<br>
+            configuration needs, please download the <%= link_to("Zip file version of the software", {:action => 'download', :path => "/downloads/software/speck-gateway.zip", :format => :zip}, :class => "link_underline") %>.
+         </div>
+      </td>
+   </tr>
+</table>
