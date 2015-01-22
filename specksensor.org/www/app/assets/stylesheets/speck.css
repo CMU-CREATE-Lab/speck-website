@@ -36,7 +36,7 @@ html, body {
 #logo {
   font-size: 60px !important;
   color: #779db4 !important;
-  margin-right: 46px !important;
+  margin-right: 0px !important;
   font-family: Arial !important;
   font-weight: bold !important;
   text-shadow: 1px 1px 5px #888888;
@@ -350,4 +350,10 @@ li{
 .speck_version {
   font-size: 13px;
   margin-left: 2px;
+}
+
+.trademark_logo {
+  position: relative;
+  top: -30px;
+  right: -2px;
 }
