@@ -58,6 +58,11 @@ SpeckWebsite::Application.routes.draw do
 
   root to: 'static#home'
 
+  match '/get_time' => 'application#get_time'
+  match '/get_outdoor_aqi' => 'application#get_outdoor_aqi'
+  match '/get_message' => 'application#get_message'
+  match '/get_scaler' => 'application#get_scaler'
+
   match ':action' => 'static#:action'
 
 end
