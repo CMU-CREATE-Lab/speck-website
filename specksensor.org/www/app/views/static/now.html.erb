@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+  <head>
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    <meta charset="UTF-8" />
+    <title>Beechwood</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial;
+      }
+      h1 {
+        left: 0;
+        line-height: 200px;
+        margin-top: -100px;
+        position: absolute;
+        text-align: center;
+        top: 20px;
+        width: 100%;
+      }
+      table {
+        top: 500px;
+      }
+    </style>
+    <script src="extras/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script src="extras/jquery.xdomainrequest.min.js" type="text/javascript"></script>
+    <script src="extras/excanvas.min.js" type="text/javascript"></script>
+    <script src="extras/Chart.min.js" type="text/javascript"></script>
+    <script>
+      "use strict";
+
+      $.support.cors = true;
+
+      var ESDR_API_ROOT_URL = 'http://esdr.cmucreatelab.org/api/v1';
+
+      var speckData = [{
+        /*id: 39,
+        api_key: "54173dc3b759532a39f658a0fc505acd11a3c72aea07c48b93b83f569311be6c",*/
+        id: 4240,
+        api_key: "1bb6a4c71383d3fad16a5706cf7cd241d2ef8d11754ab63fe2c8cfb2e054abd0",
+        channels: {
+          particle_concentration : {
+            graphMetaData : {
+              label: "Indoor Speck",
+              color: "#3E833E"
+            },
+            summary: {},
+            hourly_summary: {}
+          }
+        }
+      }];
+
+      var achdData = {
+        Lawrenceville : {
+          id: 27,
+          channels : {
+            "PM25B_UG_M3": {
+              graphMetaData : {
+                label: "Lawrenceville PM<sub>2.5</sub>, &mu;g/m<sup>3</sup>",
+                color: "blue"
+              },
+              summary: {},
+              hourly_summary: {}
+            }
+          }
+        }
+      };
+
+      var speckChannelNames = Object.keys(speckData[0].channels);
+      var achdChannelNames = Object.keys(achdData.Lawrenceville.channels);
+      var today = new Date();
+      var newDateString =  (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
+      var firstCaptureTime = newDateString + " 00:00:00";
+      var lastCaptureTime = newDateString + " 23:59:59";
+      var startTime = (new Date((firstCaptureTime)).getTime()) / 1000;
+      var endTime = (new Date((lastCaptureTime)).getTime()) / 1000;
+      var lastGraphHour = null;
+      var lastEpochHour = null;
+      var lastEpochHalfHour = null;
+      var lastTime = null;
+      var lineChart;
+
+      function getFormattedTime(date) {
+        var hours = date.getHours() === 0 ? "12" : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+        var minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+        var ampm = date.getHours() < 12 ? "AM" : "PM";
+        var formattedTime = hours + ":" + minutes + " " + ampm;
+        return formattedTime;
+      }
+
+      function parseCSV(csvData, dataContainer, doHourlySummary) {
+        var csvArray = csvData.split("\n");
+        var headingsArray = csvArray[0].split(",");
+        // First row is the CSV headers, which we took care of above, so start at 1.
+        for (var i = 1; i < csvArray.length; i++) {
+          var csvLineAsArray = csvArray[i].split(",");
+          if (doHourlySummary && lastGraphHour === null) {
+            lastGraphHour = (new Date(csvLineAsArray[0] * 1000)).getHours();
+          }
+          // First entry is the EPOC time, so start at index 1.
+          for (var j = 1; j < csvLineAsArray.length; j++) {
+            var tmpLastEpochHour = Math.floor(csvLineAsArray[0] / 3600);
+            var tmpLastEpochHalfHour = Math.floor(csvLineAsArray[0] / 1800);
+            // Every 1 hour at the 30 min mark
+            var tmpLastTime = tmpLastEpochHour + tmpLastEpochHalfHour;
+            var tmpDate = new Date(csvLineAsArray[0] * 1000);
+            tmpDate.setMinutes(30);
+            var tmpChannelHeading = headingsArray[j].split(".");
+            var channelHeading = tmpChannelHeading[tmpChannelHeading.length - 1];
+            if (doHourlySummary && tmpLastTime !== lastTime) {
+              lastTime = tmpLastTime;
+              dataContainer.channels[channelHeading].hourly_summary[getFormattedTime(tmpDate)] = parseFloat(csvLineAsArray[j]);
+            }
+            dataContainer.channels[channelHeading].summary[getFormattedTime(new Date(csvLineAsArray[0] * 1000))] = parseFloat(csvLineAsArray[j]);
+          }
+        }
+      }
+
+      function makeGraph() {
+        var speckParticlesHourly = speckData[0].channels.particle_concentration.hourly_summary;
+        var achdHourly = achdData.Lawrenceville.channels["PM25B_UG_M3"].summary;
+        var labels = [];
+        var currentHour = today.getHours();
+        today.setMinutes(30);
+        if (currentHour === 0) currentHour++;
+        for (var i = 0; i < currentHour + 1; i++) {
+          today.setHours(i);
+          labels.push(getFormattedTime(today));
+        }
+
+        var speckParticlesHourlyFull = {};
+        var achdHourlyFull = {};
+        var tmpVal;
+        for (var i = 0; i < labels.length; i++) {
+          tmpVal = typeof(speckParticlesHourly[labels[i]]) === "number" ? speckParticlesHourly[labels[i]] : null;
+          speckParticlesHourlyFull[labels[i]] = tmpVal;
+          tmpVal = typeof(achdHourly[labels[i]]) === "number" ? achdHourly[labels[i]] : null;
+          achdHourlyFull[labels[i]] = tmpVal;
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [
+            {
+              label: speckData[0].channels.particle_concentration.graphMetaData.label,
+              fillColor: "rgba(0,0,0,0)",
+              strokeColor: speckData[0].channels.particle_concentration.graphMetaData.color,
+              pointColor: speckData[0].channels.particle_concentration.graphMetaData.color,
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#000",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: labels.map(function(v) { return speckParticlesHourlyFull[v]; })
+            },
+            {
+              label: achdData.Lawrenceville.channels["PM25B_UG_M3"].graphMetaData.label,
+              fillColor: "rgba(0,0,0,0)",
+              strokeColor: achdData.Lawrenceville.channels["PM25B_UG_M3"].graphMetaData.color,
+              pointColor: achdData.Lawrenceville.channels["PM25B_UG_M3"].graphMetaData.color,
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#000",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: labels.map(function(v) { return achdHourlyFull[v]; })
+            }
+          ]
+        };
+        var options = {animation: false, scaleShowLabels: true, responsive: true, maintainAspectRatio: false, bezierCurve : false};
+        var ctx = $("#airQualityChart").get(0).getContext("2d");
+        lineChart = new Chart(ctx).Line(data, options);
+      }
+
+      function csvAjaxRequest(feedId, channels, headers, callBack) {
+        $.ajax({
+            crossDomain: true,
+            type: "GET",
+            dataType: "text",
+            url: ESDR_API_ROOT_URL + "/feeds/" + feedId+ "/channels/" + channels + "/export",
+            data: { from: startTime, to: endTime, FeedApiKey: speckData[0].api_key},
+            success: function(csvData) {
+              if (typeof(callBack) === "function")
+                callBack(csvData);
+            },
+            failure: function(data) {
+              console.log('Failed to load sensor data.');
+            },
+            headers: headers
+        });
+      }
+
+      // Initialise charts on load rather than DOMContentReady when using excanvas, as sometimes a race condition will occur,
+      // and it will result in an error when trying to get the 2d context of a canvas.
+      $(window).load(function() {
+        csvAjaxRequest(speckData[0].id, speckChannelNames.toString(), null, function(csvData) {
+          parseCSV(csvData, speckData[0], true);
+          csvAjaxRequest(achdData.Lawrenceville.id, achdChannelNames.toString(), null, function(csvData) {
+            parseCSV(csvData, achdData.Lawrenceville, false);
+            var achdPM25Data = achdData.Lawrenceville.channels["PM25B_UG_M3"].summary;
+            var achdPM25Keys = Object.keys(achdPM25Data);
+            var speckPM25Data = speckData[0].channels.particle_concentration.summary;
+            var speckPM25Keys = Object.keys(speckPM25Data);
+            $("#achdPM25").text(achdPM25Data[achdPM25Keys[achdPM25Keys.length - 1]]);
+            $("#speckPM25").text(speckPM25Data[speckPM25Keys[speckPM25Keys.length - 1]]);
+            makeGraph();
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Beechwood</h1>
+    <br><br>
+    <div style="width: 100%; height: 330px; margin: 0px;">
+      <canvas id="airQualityChart" height="330"></canvas>
+    </div>
+    <br><br>
+    <table align="center" style="font-weight: bold">
+      <tr>
+        <td valign="top" style="color: #3E833E">
+          <b>Current <br>Indoor PM<sub>2.5</sub></b>
+        </td>
+        <td id="speckPM25" width="85" valign="top" style="padding-left: 8px; color: #3E833E; font-size: 20px">
+        N/A
+        </td>
+        <td valign="top" style="color: blue">
+          <b>Current <br>Outdoor PM<sub>2.5</sub></b>
+        </td>
+        <td id="achdPM25" valign="top" style="padding-left: 8px; color: blue; font-size: 20px">
+        N/A
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
