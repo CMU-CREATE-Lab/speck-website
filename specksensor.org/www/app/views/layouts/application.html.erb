@@ -31,15 +31,35 @@
       </div>
       <div class="fill_line fill_line_header"></div>
       <div id="content" class="center">
+        <div id="header2_container">
+          <div id="header2_content_left">
+            <form id="buy_button" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" title="Purchase your own Speck!">
+              <input type="hidden" name="cmd" value="_s-xclick">
+              <input type="hidden" name="hosted_button_id" value="99EJMCK44R8QU">
+              <input type="image" src="/assets/buynow2.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style="outline: 0">
+              <img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+              <div id="shipping_info">Ships in 4 weeks</div>
+            </form>
+            <a href="https://twitter.com/specksensor" target="_blank" title="Join us on twitter!"><img id="twitter_logo" src="assets/twitter2.png" alt="join on twitter"></a>
+            <a href="https://www.facebook.com/SpeckSensor" target="_blank" title="Join us on facebook!"><img id="facebook_logo" src="assets/facebook2.png" alt="join on facebook"></a>
+          </div>
+          <div id="zip_code">
+            <form action="/zipplot?zip="+zip>
+              <br>AIR QUALITY FOR YOUR ZIP CODE:
+              <input type="text" name="zip" >
+            </form>
+          </div>
+        </div>
         <%= yield %>
       </div>
       <div id="footer">
         <div id="footer_content" class="center">
           <div id="footer_left">
-            <span>&copy; 2014 Speck</span>
+            <span>&copy; 2015 Speck</span>
           </div>
           <div id="footer_right">
             <a href="/software">Software</a>
+            <a href="/terms">Terms</a>
             <a href="/about_us">About Us</a>
           </div>
         </div>

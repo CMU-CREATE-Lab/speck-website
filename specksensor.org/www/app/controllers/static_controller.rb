@@ -7,4 +7,10 @@ class StaticController < ApplicationController
     end
   end
 
+  def zipplot
+    respond_to do |format|
+      format.html {render :layout => false}
+    end
+  end
+
 end

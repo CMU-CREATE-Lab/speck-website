@@ -3,7 +3,7 @@ html, body {
   color: #58595b;
   margin: 0;
   padding: 0;
-  height: 100%;  
+  height: 100%;
 }
 
 #wrapper {
@@ -28,8 +28,8 @@ html, body {
 }
 
 #header_link_container {
-  position: absolute; 
-  right: 0px; 
+  position: absolute;
+  right: 0px;
   top: 57px;
 }
 
@@ -55,7 +55,7 @@ html, body {
   padding-top: 20px;
   padding-bottom: 25px;
   min-width: 1130px;
-  background-color: #e6e6e6; 
+  background-color: #e6e6e6;
 }
 
 #footer_left {
@@ -63,8 +63,8 @@ html, body {
 }
 
 #footer_right {
-  position: absolute; 
-  right: 0px; 
+  position: absolute;
+  right: 0px;
   bottom: 0px;
 }
 
@@ -83,7 +83,7 @@ html, body {
 }
 
 .fill_line_header {
-  min-width: 1130px !important;  
+  min-width: 1130px !important;
 }
 
 #content {
@@ -99,55 +99,55 @@ html, body {
   overflow: hidden;
 }
 
-#home_page_image_overlay { 
-  position: absolute; 
-  margin-left: auto; 
-  margin-right: auto; 
-  left: -575px; 
-  right: 0; 
-  top: 38px; 
-  color: white; 
-  font-size: 30px; 
-  width: 407px; 
+#home_page_image_overlay {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: -575px;
+  right: 0;
+  top: 105px;
+  color: white;
+  font-size: 30px;
+  width: 407px;
   text-align: left;
 }
 
 #what_is_speck_image_overlay {
-  position: absolute; 
-  margin-left: auto; 
-  margin-right: auto; 
-  left: 595px; 
-  right: 0; 
-  top: 39px; 
-  color: white; 
-  font-size: 30px; 
-  width: 453px; 
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 595px;
+  right: 0;
+  top: 117px;
+  color: white;
+  font-size: 30px;
+  width: 453px;
   text-align: right;
 }
 
 #what_is_pm_image_overlay {
-  position: absolute; 
-  margin-left: auto; 
-  margin-right: auto; 
-  left: 595px; 
-  right: 0; 
-  top: 39px; 
-  color: white; 
-  font-size: 30px; 
-  width: 458px; 
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 595px;
+  right: 0;
+  top: 117px;
+  color: white;
+  font-size: 30px;
+  width: 458px;
   text-align: right;
 }
 
 #causes_image_overlay {
-  position: absolute; 
-  margin-left: auto; 
-  margin-right: auto; 
-  left: -663px; 
-  right: 0; 
-  top: 154px; 
-  color: black; 
-  font-size: 25px; 
-  width: 398px; 
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: -663px;
+  right: 0;
+  top: 233px;
+  color: black;
+  font-size: 25px;
+  width: 398px;
   text-align: left;
 }
 
@@ -185,7 +185,7 @@ html, body {
 }
 
 #what_is_pm_main {
-  margin-left: 52px; 
+  margin-left: 52px;
   margin-top: 27px;
 }
 
@@ -252,13 +252,13 @@ a {
   color: inherit;
 }
 
-a:active { 
+a:active {
   background-color: inherit;
 }
 
-a img {  
-  border: none;  
-}  
+a img {
+  border: none;
+}
 
 a:hover {
   opacity: 0.6;
@@ -294,8 +294,7 @@ tr.space_under_end > td {
 }
 
 #page_heading {
-  text-align: left; 
-  margin-top: 51px;
+  text-align: left;
 }
 
 .align_left {
@@ -356,4 +355,48 @@ li{
   position: relative;
   top: -30px;
   right: -2px;
+}
+
+#zip_code {
+  text-align: right;
+}
+
+#twitter_logo {
+  margin-left: 60px;
+  margin-top: 11px;
+}
+
+#facebook_logo {
+  margin-left: 30px;
+  margin-top: 11px;
+}
+
+#shipping_info {
+  position: absolute;
+  top: 45px;
+  left: 3px;
+}
+
+#buy_button {
+  float: left;
+}
+
+#buy_button:hover {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  cursor: pointer;
+}
+
+#header2_container {
+  height: 50px;
+}
+
+#header2_content_left {
+  position: absolute;
+  text-align: left;
+  top: 10px;
+}
+
+#terms_page {
+  text-align: left;
 }
