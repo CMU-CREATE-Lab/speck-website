@@ -34,8 +34,10 @@
       var speckData = [{
         /*id: 39,
         api_key: "54173dc3b759532a39f658a0fc505acd11a3c72aea07c48b93b83f569311be6c",*/
-        id: 4240,
-        api_key: "1bb6a4c71383d3fad16a5706cf7cd241d2ef8d11754ab63fe2c8cfb2e054abd0",
+        /*id: 4240,
+        api_key: "1bb6a4c71383d3fad16a5706cf7cd241d2ef8d11754ab63fe2c8cfb2e054abd0",*/
+        id: 4243,
+        api_key: "b14590c147e31a3cbe833d0ed3897cf111c370ee417303a7a9beb2bf755d1757",
         channels: {
           particle_concentration : {
             graphMetaData : {
@@ -99,13 +101,18 @@
           for (var j = 1; j < csvLineAsArray.length; j++) {
             var tmpLastEpochHour = Math.floor(csvLineAsArray[0] / 3600);
             var tmpLastEpochHalfHour = Math.floor(csvLineAsArray[0] / 1800);
-            // Every 1 hour at the 30 min mark
+            // Every 30 min
             var tmpLastTime = tmpLastEpochHour + tmpLastEpochHalfHour;
             var tmpDate = new Date(csvLineAsArray[0] * 1000);
-            tmpDate.setMinutes(30);
+            //tmpDate.setMinutes(30);
             var tmpChannelHeading = headingsArray[j].split(".");
             var channelHeading = tmpChannelHeading[tmpChannelHeading.length - 1];
             if (doHourlySummary && tmpLastTime !== lastTime) {
+              var tmpMin = tmpDate.getMinutes();
+              if (tmpMin < 30 && tmpMin != 0)
+                tmpDate.setMinutes(0);
+              else if (tmpMin > 30 && tmpMin != 30)
+                tmpDate.setMinutes(30);
               lastTime = tmpLastTime;
               dataContainer.channels[channelHeading].hourly_summary[getFormattedTime(tmpDate)] = parseFloat(csvLineAsArray[j]);
             }
@@ -119,11 +126,15 @@
         var achdHourly = achdData.Lawrenceville.channels["PM25B_UG_M3"].summary;
         var labels = [];
         var currentHour = today.getHours();
-        today.setMinutes(30);
+        var current = new Date();
         if (currentHour === 0) currentHour++;
         for (var i = 0; i < currentHour + 1; i++) {
           today.setHours(i);
-          labels.push(getFormattedTime(today));
+          for (var j = 0; j < 2; j++) {
+            today.setMinutes(j * 30);
+            if (today > current) break;
+            labels.push(getFormattedTime(today));
+          }
         }
 
         var speckParticlesHourlyFull = {};
@@ -161,7 +172,7 @@
             }
           ]
         };
-        var options = {animation: false, scaleShowLabels: true, responsive: true, maintainAspectRatio: false, bezierCurve : false};
+        var options = {animation: false, scaleShowLabels: true, responsive: true, maintainAspectRatio: false, bezierCurve : false, showXLabels: labels.length / 2};
         var ctx = $("#airQualityChart").get(0).getContext("2d");
         lineChart = new Chart(ctx).Line(data, options);
       }
