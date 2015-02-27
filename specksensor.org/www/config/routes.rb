@@ -1,4 +1,6 @@
 SpeckWebsite::Application.routes.draw do
+  resources :specks
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

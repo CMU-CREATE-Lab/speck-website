@@ -1,0 +1,19 @@
+<h1>Speck Listing</h1>
+
+<table style="text-align: left; border-spacing: 10px; width: 800px">
+  <tr>
+    <th>Serial Number</th>
+    <th>Firmware</th>
+    <th>Last Ping</th>
+  </tr>
+
+<% @specks.each do |speck| %>
+  <tr>
+    <td><%= speck.serial_number %></td>
+    <td><%=speck.firmware %></td>
+    <td><%=speck.updated_at %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

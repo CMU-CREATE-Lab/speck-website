@@ -1,0 +1,2 @@
+module SpecksHelper
+end
