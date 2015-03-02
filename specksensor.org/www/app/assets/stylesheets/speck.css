@@ -233,6 +233,7 @@ html, body {
 .rounded_container_title {
   text-align: center;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .rounded_container_content {
